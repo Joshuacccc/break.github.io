@@ -70,7 +70,7 @@ function init(){
 	// 	}
     // })
 
-    canvas.addEventListener('touchstart',function(e){
+    window.addEventListener('touchstart',function(e){
         var touch = e.targetTouches[0];
         if(touch.clientX>boardX && touch.clientX < boardX + board.width && 
             touch.clientY > boardY && touch.clientY < boardY + board.height){
@@ -78,7 +78,7 @@ function init(){
         }
     });
 
-    canvas.addEventListener("touchmove", function(e){
+    window.addEventListener("touchmove", function(e){
         var touch = e.targetTouches[0];
         boardX = touch.clientX - board.width / 2;
         if(boardX<0){
@@ -88,7 +88,7 @@ function init(){
         }
     });
 
-    canvas.addEventListener("touchend", function(){
+    window.addEventListener("touchend", function(){
         document.removeEventListener("touchmove",defaultEvent);
     });
 
