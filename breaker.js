@@ -89,7 +89,7 @@ function gameStart(){
     createBrick();
 
     gameover = 0;
-    boardX = 0; boardY = 600;
+    boardX = cW / 2 - 51; boardY = 600;
     ballX = 400; ballY = 350;
     vx = 4; vy = -8;
 
