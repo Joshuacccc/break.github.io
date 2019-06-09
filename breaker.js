@@ -49,7 +49,7 @@ function init(){
         }
     }
 
-    canvas.addEventListener('touchstart', function (event) {
+    window.addEventListener('touchstart', function (event) {
 		var clientWidth = cW;
 		if(event.touches[0].pageX < clientWidth / 2) {
 			mv = setInterval(moveLeft(),1000/60);
@@ -59,7 +59,7 @@ function init(){
 		event.preventDefault();
     })
     
-    canvas.addEventListener('touchend', function (event) {
+    window.addEventListener('touchend', function (event) {
 		var clientWidth = cW;
 		if(event.changedTouches[0].pageX < clientWidth / 2) {
 			clearInterval(mv);
