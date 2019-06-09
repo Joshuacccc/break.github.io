@@ -17,7 +17,7 @@ var pv = 10 ;
 // canvas的宽高
 var cW = 1000, cH = 625;
 // 挡板坐标
-var boardX = 0, boardY = 630;
+var boardX = cW / 2 -51, boardY = 630;
 // 小球坐标
 var ballX = 400, ballY = 350;
 // 小球速度
@@ -51,9 +51,9 @@ function init(){
     canvas.addEventListener('touchstart', function (event) {
 		var clientWidth = cW;
 		if(event.touches[0].pageX < clientWidth / 2) {
-			moveLeft();
+			var mv = setInterval(moveLeft(),1000/60);
 		} else {
-			moveRight();
+			var mv = setInterval(moveRight(),1000/60);
 		}
 		event.preventDefault();
     })
@@ -368,26 +368,22 @@ function last(){
 
 //挡板往左移动
 function moveLeft(){
-    var mv = setInterval(function(){
-        boardX -= pv;
-        if(boardX<0){
-            boardX = 0;
-        }else if(boardX>cW-board.width){
-            boardX = cW-board.width;
-        }
-    }, 1000/60)
+    boardX -= pv;
+    if(boardX<0){
+        boardX = 0;
+    }else if(boardX>cW-board.width){
+        boardX = cW-board.width;
+    }
 }
 
 //挡板往右移动
 function moveRight(){
-    var mv = setInterval(function(){
-        boardX += pv;
-        if(boardX<0){
-            boardX = 0;
-        }else if(boardX>cW-board.width){
-            boardX = cW-board.width;
-        }
-    }, 1000/60)
+    boardX += pv;
+    if(boardX<0){
+        boardX = 0;
+    }else if(boardX>cW-board.width){
+        boardX = cW-board.width;
+    }
 }
 
 //挡板停止
