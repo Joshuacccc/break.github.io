@@ -12,6 +12,8 @@ var suspend
 var score=0;
 var allbricks=0;
 
+var oL;
+
 // 挡板移动速度
 var pv = 10 ;
 
@@ -47,27 +49,48 @@ function init(){
         }else if(boardX>cW-board.width){
             boardX = cW-board.width;
         }
-    }
+    };
 
-    window.addEventListener('touchstart', function (event) {
-		var clientWidth = cW;
-		if(event.touches[0].pageX < clientWidth / 2) {
-			mv = setInterval(moveLeft(),1000/60);
-		} else {
-			mv = setInterval(moveRight(),1000/60);
-		}
-		event.preventDefault();
-    })
+    // canvas.addEventListener('touchstart', function (event) {
+	// 	var clientWidth = cW;
+	// 	if(event.touches[0].clientX < clientWidth / 2) {
+	// 		mv = setInterval(moveLeft(),1000/60);
+	// 	} else {
+	// 		mv = setInterval(moveRight(),1000/60);
+	// 	}
+	// 	event.preventDefault();
+    // })
     
-    window.addEventListener('touchend', function (event) {
-		var clientWidth = cW;
-		if(event.changedTouches[0].pageX < clientWidth / 2) {
-			clearInterval(mv);
-		} else {
-			clearInterval(mv);
-		}
-	})
+    // window.addEventListener('touchend', function (event) {
+	// 	var clientWidth = cW;
+	// 	if(event.changedTouches[0].pageX < clientWidth / 2) {
+	// 		clearInterval(mv);
+	// 	} else {
+	// 		clearInterval(mv);
+	// 	}
+    // })
 
+    canvas.addEventListener('touchstart',function(e){
+        var touch = e.targetTouches[0];
+        if(touch.clientX>boardX && touch.clientX < boardX + board.width && 
+            touch.clientY > boardY && touch.clientY < boardY + board.height){
+            document.addEventListener("touchmove", defaultEvent, false);    
+        }
+    });
+
+    canvas.addEventListener("touchmove", function(e){
+        var touch = e.targetTouches[0];
+        boardX = touch.clientX - board.width / 2;
+        if(boardX<0){
+            boardX = 0;
+        }else if(boardX>cW-board.width){
+            boardX = cW-board.width;
+        }
+    });
+
+    canvas.addEventListener("touchend", function(){
+        document.removeEventListener("touchmove",defaultEvent);
+    });
 
 
     bg2 = addImage("assets/bg.jpg");
@@ -77,6 +100,10 @@ function init(){
     // 添加循环机制
     // setInterval(gameTick, 1000/60);
 
+}
+
+function defaultEvent(e){
+    e.preventDefault();
 }
 
 function gameStart(){
