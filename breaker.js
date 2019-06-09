@@ -61,9 +61,9 @@ function init(){
     canvas.addEventListener('touchend', function (event) {
 		var clientWidth = cW;
 		if(event.changedTouches[0].pageX < clientWidth / 2) {
-			stop();
+			clearInterval(mv);
 		} else {
-			stop();
+			clearInterval(mv);
 		}
 	})
 
