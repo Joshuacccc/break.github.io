@@ -5,6 +5,7 @@ var context;
 var bg2, ball, board;
 
 var lv = 1;
+var mv;
 var t;
 var gameover=0;
 var suspend
@@ -51,9 +52,9 @@ function init(){
     canvas.addEventListener('touchstart', function (event) {
 		var clientWidth = cW;
 		if(event.touches[0].pageX < clientWidth / 2) {
-			var mv = setInterval(moveLeft(),1000/60);
+			mv = setInterval(moveLeft(),1000/60);
 		} else {
-			var mv = setInterval(moveRight(),1000/60);
+			mv = setInterval(moveRight(),1000/60);
 		}
 		event.preventDefault();
     })
@@ -80,6 +81,7 @@ function init(){
 
 function gameStart(){
     log("gameStart");
+    clearInterval(mv);
     clearInterval(t);
 
     score =0;
@@ -124,6 +126,7 @@ function gameTick(){
 
 //完成关卡
 function gameEnd(){
+    clearInterval(mv);
     clearInterval(t);
     context.clearRect(0, 0, 1000, 625);
     context.font = '48px Microsoft YaHei';
@@ -143,6 +146,7 @@ function gameEnd(){
 //游戏结束
 function gameOver(){
     clearInterval(t);
+    clearInterval(mv);
     context.clearRect(0, 0, 1000, 625);
     context.font = '48px Microsoft YaHei';
     context.fillText('游戏结束', 404, 226);
@@ -350,6 +354,7 @@ function log(msg){
 
 //下一关
 function next(){
+    clearInterval(mv);
     clearInterval(t);
     if(lv<3){
         lv++;
@@ -359,6 +364,7 @@ function next(){
 
 //上一关
 function last(){
+    clearInterval(mv);
     clearInterval(t);
     if(lv>1){
         lv--;
