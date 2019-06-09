@@ -11,6 +11,9 @@ var suspend
 var score=0;
 var allbricks=0;
 
+// 挡板移动速度
+var pv = 10 ;
+
 // canvas的宽高
 var cW = 1000, cH = 625;
 // 挡板坐标
@@ -38,7 +41,33 @@ function init(){
     canvas.onmousemove = function(e){
         var x = e.clientX - rect.left * (canvas.width / rect.width);
         boardX = x - board.width / 2;
+        if(boardX<0){
+            boardX = 0;
+        }else if(boardX>cW-board.width){
+            boardX = cW-board.width;
+        }
     }
+
+    canvas.addEventListener('touchstart', function (event) {
+		var clientWidth = cW;
+		if(event.touches[0].pageX < clientWidth / 2) {
+			moveLeft();
+		} else {
+			moveRight();
+		}
+		event.preventDefault();
+    })
+    
+    canvas.addEventListener('touchend', function (event) {
+		var clientWidth = cW;
+		if(event.changedTouches[0].pageX < clientWidth / 2) {
+			stop();
+		} else {
+			stop();
+		}
+	})
+
+
 
     bg2 = addImage("assets/bg.jpg");
     board = addImage("assets/board.png");
@@ -93,13 +122,25 @@ function gameTick(){
     }
 }
 
+//完成关卡
 function gameEnd(){
     clearInterval(t);
     context.clearRect(0, 0, 1000, 625);
     context.font = '48px Microsoft YaHei';
-    context.fillText('成功通关 \n 分数:', 404, 226);
+    switch(lv){
+        case 1:
+            context.fillText('完成关卡1', 404, 226);
+            break;
+        case 2:
+            context.fillText('完成关卡2', 404, 226);
+            break;
+        case 3:
+            context.fillText('完成关卡3', 404, 226);
+            break;
+    }
 }
 
+//游戏结束
 function gameOver(){
     clearInterval(t);
     context.clearRect(0, 0, 1000, 625);
@@ -121,10 +162,25 @@ function testBallAndBricks(){
 
 // 小球与挡板的碰撞检测
 function testBallAndBoard(){
-    var hit = hitTestPoint(boardX - 32, boardY - 32, board.width, board.height + 32, ballX, ballY)
-    if(hit){
-        ballY = boardY - 32;
-        vy *= -1;
+
+    //hit1 先判断是否与挡板有碰撞
+    var hit1 = hitTestPoint(boardX - 16, boardY - 32, board.width + 32, board.height + 32, ballX, ballY) 
+    if(hit1){
+        // hit2 判断是否碰撞到挡板中间
+        var hit2 = hitTestPoint(boardX + 21 - 16 , boardY - 32, board.width - 42, board.height + 32, ballX, ballY)
+        if(hit2){
+            ballY = boardY - 32;
+            vy *= -1;
+            if(Math.abs(vx)==8){
+                vx = vx / 2;
+            }
+        }else{
+            ballY = boardY - 32;
+            vy *= -1;
+            if(Math.abs(vx)==4){
+                vx = vx * 2;
+            }
+        }
     }
 }
 
@@ -268,6 +324,11 @@ function updateBall(){
 
 function mouseMoveHandler(e){
     boardX = e.x - board.width / 2;
+    if(boardX<0){
+        boardX = 0;
+    }else if(boardX>cW-board.width){
+        boardX = cW-board.width;
+    }
 }
 
 // 清屏
@@ -303,4 +364,29 @@ function last(){
         lv--;
     }
     gameStart();
+}
+
+//挡板往左移动
+function moveLeft(){
+    boardX -= pv;
+    if(boardX<0){
+        boardX = 0;
+    }else if(boardX>cW-board.width){
+        boardX = cW-board.width;
+    }
+}
+
+//挡板往右移动
+function moveRight(){
+    boardX += pv;
+    if(boardX<0){
+        boardX = 0;
+    }else if(boardX>cW-board.width){
+        boardX = cW-board.width;
+    }
+}
+
+//挡板停止
+function stop(){
+    boardX = boardX;
 }
