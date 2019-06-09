@@ -368,25 +368,29 @@ function last(){
 
 //挡板往左移动
 function moveLeft(){
-    boardX -= pv;
-    if(boardX<0){
-        boardX = 0;
-    }else if(boardX>cW-board.width){
-        boardX = cW-board.width;
-    }
+    var mv = setInterval(function(){
+        boardX -= pv;
+        if(boardX<0){
+            boardX = 0;
+        }else if(boardX>cW-board.width){
+            boardX = cW-board.width;
+        }
+    }, 1000/60)
 }
 
 //挡板往右移动
 function moveRight(){
-    boardX += pv;
-    if(boardX<0){
-        boardX = 0;
-    }else if(boardX>cW-board.width){
-        boardX = cW-board.width;
-    }
+    var mv = setInterval(function(){
+        boardX += pv;
+        if(boardX<0){
+            boardX = 0;
+        }else if(boardX>cW-board.width){
+            boardX = cW-board.width;
+        }
+    }, 1000/60)
 }
 
 //挡板停止
 function stop(){
-    boardX = boardX;
+    clearInterval(mv);
 }
